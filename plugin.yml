@@ -1,0 +1,6 @@
+name: SSHotel
+main: org.wargamer2010.sshotel.SSHotel
+version: 1.0
+dev-url: http://dev.bukkit.org/server-mods/signshop
+softdepend: [SignShop]
+author: Wargamer2010

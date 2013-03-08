@@ -1,0 +1,34 @@
+#
+# This is an extension plugin to SignShop, read the SignShop Quick Reference if you need help with this config          #
+#                                                                                                                       #
+# You can also visit our Bukkit page at tiny.cc/SignShop for any additional questions, or comments                      #
+#                                                                                                                       #
+# The syntax for Hotel signs is:                                                                                        #
+#                                                                                                                       #
+# Line 1 - [Hotel]                                                                                                      #
+# Line 2 - The name of the hotel this room belongs to                                                                   #
+# Line 3 - The time this sign should rent the room for s, m, h, d, w                                                    #
+#          (If you want to rent a room for 1 day and 2 hours, you would just type "26h" on the third line)              #
+# Line 4 - The price of renting the room                                                                                #
+#                                                                                                                       #
+signs:
+  Hotel: HotelSign,takePlayerMoney
+messages:
+  setup:
+    Hotel: You have created a Hotel sign that costs !price to rent a room for !renttime!
+  confirm:
+    Hotel: Pay !price to rent this room for !renttime?
+  transaction:
+    Hotel: You paid !price to rent this room for !renttime!
+  transaction_owner:
+    Hotel: \!customer rented room nr. !roomnr in !hotel for !price!
+errors:
+  need_door: You need to link at least one door to build this shop!
+  invalid_time: Invalid time period specified on the third line.
+  invalid_hotel: Invalid hotel name on the second line.
+  no_door: There's no door attached to this room!
+  already_rented_self: You've already rented this room!
+  already_rented_other: This room has already been rented!
+  could_not_rent_room: Could not rent the room, please tell your administrator to check the server.log for more information.
+  already_registered: This room is already registered!
+  no_entry: You have not rented this room, so you are not allowed to enter!
