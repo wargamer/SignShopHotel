@@ -1,8 +1,6 @@
 package org.wargamer2010.sshotel;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.configuration.configUtil;
+import org.wargamer2010.signshop.metrics.setupMetrics;
 import org.wargamer2010.sshotel.listeners.ExpiredRentListener;
 import org.wargamer2010.sshotel.listeners.SignShopListener;
 
@@ -47,6 +46,12 @@ public class SSHotel extends JavaPlugin {
                 SignShopConfig.registerMessages(entry.getKey(), entry.getValue());
             }
         }
+
+        if(new setupMetrics().setup(this))
+            log("Succesfully started Metrics, see http://mcstats.org for more information.", Level.INFO);
+        else
+            log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
+
 
         instance = this;
         log("Enabled", Level.INFO);
