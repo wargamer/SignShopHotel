@@ -6,13 +6,12 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.material.Door;
 import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.blocks.SSDoor;
 import org.wargamer2010.signshop.configuration.Storage;
-import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.signshop.events.SSExpiredEvent;
 import org.wargamer2010.signshop.util.itemUtil;
+import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 
 public class ExpiredRentListener implements Listener {

@@ -18,6 +18,11 @@ public class SSHotel extends JavaPlugin {
     private static final Logger logger = Logger.getLogger("Minecraft");
     private static SSHotel instance = null;
 
+    /**
+     * Log given message at given level for SSHotel
+     * @param message Message to log
+     * @param level Level to log at
+     */
     public static void log(String message, Level level) {
         if(!message.isEmpty())
             logger.log(level,("[SignShopHotel] " + message));
@@ -52,8 +57,7 @@ public class SSHotel extends JavaPlugin {
         else
             log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
 
-
-        instance = this;
+        setInstance(this);
         log("Enabled", Level.INFO);
     }
 
@@ -64,10 +68,20 @@ public class SSHotel extends JavaPlugin {
 
     private void createDir() {
         if(!this.getDataFolder().exists()) {
-            this.getDataFolder().mkdir();
+            if(!this.getDataFolder().mkdir()) {
+                log("Could not create plugin folder!", Level.SEVERE);
+            }
         }
     }
 
+    private static void setInstance(SSHotel newinstance) {
+        instance = newinstance;
+    }
+
+    /**
+     * Gets the instance of SSHotel
+     * @return instance
+     */
     public static SSHotel getInstance() {
         return instance;
     }
