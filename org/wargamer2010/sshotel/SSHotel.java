@@ -21,7 +21,7 @@ public class SSHotel extends JavaPlugin {
 
     public static void log(String message, Level level) {
         if(!message.isEmpty())
-            logger.log(level,("[SSHotel] " + message));
+            logger.log(level,("[SignShopHotel] " + message));
     }
 
     @Override
