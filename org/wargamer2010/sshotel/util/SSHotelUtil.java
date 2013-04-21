@@ -121,7 +121,9 @@ public class SSHotelUtil {
 
     public static boolean isHotelPart(Block block) {
         Material mat = block.getType();
-        return (mat == Material.WOODEN_DOOR || mat == Material.IRON_DOOR || mat == Material.LEVER || mat == Material.STONE_PLATE || mat == Material.STONE_BUTTON);
+        return (mat == Material.getMaterial("WOODEN_DOOR") || mat == Material.getMaterial("IRON_DOOR") ||
+                mat == Material.getMaterial("STONE_BUTTON") || mat == Material.getMaterial("STONE_PLATE") || mat == Material.getMaterial("WOOD_PLATE") ||
+                mat == Material.getMaterial("IRON_DOOR_BLOCK"));
     }
 
     private static class HotelLength {

@@ -52,6 +52,13 @@ public class SSHotel extends JavaPlugin {
             }
         }
 
+        SignShopConfig.addLinkable("WOODEN_DOOR", "door");
+        SignShopConfig.addLinkable("IRON_DOOR", "door");
+        SignShopConfig.addLinkable("IRON_DOOR_BLOCK", "door");
+        SignShopConfig.addLinkable("STONE_BUTTON", "button");
+        SignShopConfig.addLinkable("STONE_PLATE", "plate");
+        SignShopConfig.addLinkable("WOOD_PLATE", "plate");
+
         if(new setupMetrics().setup(this))
             log("Succesfully started Metrics, see http://mcstats.org for more information.", Level.INFO);
         else
