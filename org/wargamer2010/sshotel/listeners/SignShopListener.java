@@ -67,7 +67,7 @@ public class SignShopListener implements Listener {
         String renter = RoomRegistration.getPlayerFromShop(shop);
         event.setMessagePart("!renttime", SSHotelUtil.getPrintablePeriod(event.getShop().getMisc().get("Period")));
 
-        if(renter.isEmpty() || !renter.equals(event.getPlayer().getName())) {
+        if((renter.isEmpty() || !renter.equals(event.getPlayer().getName())) && !event.getPlayer().isOp()) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("You have not rented this room so you're not allowed to enter!");
         }
