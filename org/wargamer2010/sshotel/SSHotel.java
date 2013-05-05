@@ -59,10 +59,13 @@ public class SSHotel extends JavaPlugin {
         SignShopConfig.addLinkable("STONE_PLATE", "plate");
         SignShopConfig.addLinkable("WOOD_PLATE", "plate");
 
-        if(new setupMetrics().setup(this))
-            log("Succesfully started Metrics, see http://mcstats.org for more information.", Level.INFO);
-        else
-            log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
+        setupMetrics metrics = new setupMetrics(this);
+        if(!metrics.isOptOut()) {
+            if(metrics.setup())
+                log("Succesfully started Metrics, see http://mcstats.org for more information.", Level.INFO);
+            else
+                log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
+        }
 
         setInstance(this);
         log("Enabled", Level.INFO);
