@@ -7,6 +7,7 @@ import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.configuration.Storage;
+import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
@@ -50,6 +51,15 @@ public class HotelSign implements SignShopOperation {
         ssArgs.setMessagePart("!renttime", SSHotelUtil.getPrintablePeriod(ssArgs.miscSettings.get("Period")));
         ssArgs.setMessagePart("!hotel", ssArgs.miscSettings.get("Hotel"));
         ssArgs.setMessagePart("!roomnr", ssArgs.miscSettings.get("RoomNr"));
+        SignShopPlayer player = ssArgs.getPlayer().get();
+
+        if(SSHotel.getMaxRentsPerPerson() != 0 && !player.isOp()) {
+            if(RoomRegistration.getAmountOfRentsForPlayer(player.getName()) >= SSHotel.getMaxRentsPerPerson()) {
+                ssArgs.setMessagePart("!maxrents", Integer.toString(SSHotel.getMaxRentsPerPerson()));
+                player.sendMessage(SignShopConfig.getError("max_rents_reached", ssArgs.getMessageParts()));
+                return false;
+            }
+        }
 
         if(RoomRegistration.getRoomByDoor(door) == null) {
             ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("no_door", ssArgs.getMessageParts()));

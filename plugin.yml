@@ -1,6 +1,10 @@
 name: SignShopHotel
 main: org.wargamer2010.sshotel.SSHotel
-version: 1.0.2Dev
+version: 1.0.3Dev
 dev-url: http://dev.bukkit.org/server-mods/signshop
 softdepend: [SignShop]
 author: Wargamer2010
+commands:
+  signshophotel:
+    description: Admin commands for SignShopHotel
+    usage: /signshophotel [reload]

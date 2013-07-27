@@ -51,13 +51,16 @@ public class RoomRegistration {
     public static void setPlayerForShop(Seller seller, String player) {
         seller.getMisc().put("Renter", player);
 
-        Sign sign = (Sign) Storage.get().getSignFromSeller(seller).getState();
+        Sign sign = (Sign) seller.getSign().getState();
 
         if(!player.isEmpty())
             sign.setLine(3, (ChatColor.DARK_GREEN + player));
         else
             sign.setLine(3, seller.getMisc().get("Price"));
         sign.update();
+    }
 
+    public static int getAmountOfRentsForPlayer(String player) {
+        return (Storage.get().getShopsWithMiscSetting("Renter", player).size());
     }
 }

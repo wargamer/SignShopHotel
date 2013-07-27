@@ -11,6 +11,12 @@
 #          (If you want to rent a room for 1 day and 2 hours, you would just type "26h" on the third line)              #
 # Line 4 - The price of renting the room                                                                                #
 #                                                                                                                       #
+
+# Defines the maximum amount of rooms a player can rent at one time
+# This limit can be bypassed by anyone with OP or the SuperAdmin SignShop permission node
+# If this setting is set to 0, the amount of rents is unlimited
+MaxRentsPerPerson: 0
+
 signs:
   Hotel: HotelSign,takePlayerMoney
 messages:
@@ -32,3 +38,4 @@ errors:
   could_not_rent_room: Could not rent the room, please tell your administrator to check the server.log for more information.
   already_registered: This room is already registered!
   no_entry: You have not rented this room, so you are not allowed to enter!
+  max_rents_reached: You have reached the maximum amount of rooms you can rent. It is set at !maxrents room(s) per person.
