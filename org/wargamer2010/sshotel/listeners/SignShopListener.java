@@ -1,6 +1,8 @@
 
 package org.wargamer2010.sshotel.listeners;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -17,7 +19,9 @@ import org.wargamer2010.signshop.events.SSCreatedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEventType;
 import org.wargamer2010.signshop.events.SSTouchShopEvent;
+import org.wargamer2010.signshop.operations.SignShopOperationListItem;
 import org.wargamer2010.signshop.util.itemUtil;
+import org.wargamer2010.signshop.util.signshopUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
@@ -28,7 +32,12 @@ public class SignShopListener implements Listener {
     public void onSSBuildEvent(SSCreatedEvent event) {
         if(event.isCancelled())
             return;
-        if(!event.getOperation().equals("hotel"))
+
+        boolean foundHotelSign = false;
+        for(String item : SignShopConfig.getBlocks(event.getOperation()))
+            if(item.equalsIgnoreCase("HotelSign"))
+                foundHotelSign = true;
+        if(!foundHotelSign)
             return;
 
         Sign sign = (Sign)event.getSign().getState();
