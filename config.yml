@@ -18,16 +18,24 @@
 MaxRentsPerPerson: 0
 
 signs:
-  Hotel: HotelSign,takePlayerMoney
+  Hotel: HotelSign,takePlayerMoney,giveOwnerMoney
+  iHotel: HotelSign,takePlayerMoney
 messages:
   setup:
     Hotel: You have created a Hotel sign that costs !price to rent a room for !renttime!
+    iHotel: You have created an iHotel sign that costs !price to rent a room for !renttime!
   confirm:
     Hotel: Pay !price to rent this room for !renttime?
+    iHotel: Pay !price to rent this room for !renttime?
   transaction:
     Hotel: You paid !price to rent this room for !renttime!
+    iHotel: You paid !price to rent this room for !renttime!
   transaction_owner:
     Hotel: \!customer rented room nr. !roomnr in !hotel for !price!
+    iHotel: ''
+  help:
+    Hotel: This sign exchanges the customer's money for the ability to open a door to a hotel room.  Line 2 must say the name of the hotel.  Line 3 must be the amount of time the rental takes (e.g. 20s for 20 seconds, 24h for 1 day).  Line 4 is the cost of the rental.
+    iHotel: This sign exchanges the customer's money for the ability to open a door to a hotel room.  Line 2 must say the name of the hotel.  Line 3 must be the amount of time the rental takes (e.g. 20s for 20 seconds, 24h for 1 day).  Line 4 is the cost of the rental. The owner does not get money from this sign.
 errors:
   need_door: You need to link at least one door to build this shop!
   invalid_time: Invalid time period specified on the third line.
