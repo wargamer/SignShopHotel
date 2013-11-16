@@ -6,7 +6,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
+import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.configuration.Storage;
+import org.wargamer2010.signshop.timing.IExpirable;
+import org.wargamer2010.signshop.util.SSTimeUtil;
+import org.wargamer2010.sshotel.timing.RoomExpiration;
+import org.wargamer2010.sshotel.util.SSHotelUtil;
 
 public class RoomRegistration {
     private RoomRegistration() {
@@ -62,5 +67,24 @@ public class RoomRegistration {
 
     public static int getAmountOfRentsForPlayer(String player) {
         return (Storage.get().getShopsWithMiscSetting("Renter", player).size());
+    }
+
+    /**
+     * Returns a string representation of the time left for the current Hotel room
+     * Or returns N/A if the room is not rented out
+     *
+     * @param seller
+     * @return String representation of the time left
+     */
+    public static String getTimeLeftForRoom(Seller seller) {
+        if(seller == null)
+            return "N/A";
+        RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
+        if(roomex == null)
+            return "N/A";
+        int left = SignShop.getTimeManager().getTimeLeftForExpirable(roomex.getEntry());
+        if(left == -1)
+            return "N/A"; // TODO: Handle this somewhere else?
+        return SSTimeUtil.parseTime(left);
     }
 }

@@ -41,8 +41,8 @@ errors:
   invalid_time: Invalid time period specified on the third line.
   invalid_hotel: Invalid hotel name on the second line.
   no_door: There's no door attached to this room!
-  already_rented_self: You've already rented this room!
-  already_rented_other: This room has already been rented!
+  already_rented_self_timeleft: You've already rented this room, there is !timeleft left.
+  already_rented_other_timeleft: This room has already been rented, there is !timeleft left before it can be rented again.
   could_not_rent_room: Could not rent the room, please tell your administrator to check the server.log for more information.
   already_registered: This room is already registered!
   no_entry: You have not rented this room, so you are not allowed to enter!

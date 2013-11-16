@@ -65,13 +65,16 @@ public class HotelSign implements SignShopOperation {
             ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("no_door", ssArgs.getMessageParts()));
             return false;
         }
+
         Seller seller = Storage.get().getSeller(ssArgs.getSign().get().getLocation());
         String renter = RoomRegistration.getPlayerFromShop(seller);
+        ssArgs.setMessagePart("!timeleft", RoomRegistration.getTimeLeftForRoom(seller));
+
         if(renter.equals(ssArgs.getPlayer().get().getName())) {
-            ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_self", ssArgs.getMessageParts()));
+            ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_self_timeleft", ssArgs.getMessageParts()));
             return false;
         } else if(!renter.isEmpty()) {
-            ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_other", ssArgs.getMessageParts()));
+            ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_other_timeleft", ssArgs.getMessageParts()));
             return false;
         }
 
@@ -100,16 +103,11 @@ public class HotelSign implements SignShopOperation {
 
         Integer period = SSHotelUtil.getPeriod(seller.getMisc().get("Period"));
 
-        String hotel = seller.getMisc().get("Hotel");
-        Integer roomnr;
-        try {
-            roomnr = Integer.parseInt(seller.getMisc().get("RoomNr"));
-        } catch(NumberFormatException ex) {
-            ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("could_not_rent_room", ssArgs.getMessageParts()));
-            SSHotel.log("Could not parse RoomNr: " + seller.getMisc().get("RoomNr"), Level.WARNING);
+        RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
+        if(roomex == null)
             return false;
-        }
-        SignShop.getTimeManager().addExpirable(new RoomExpiration(hotel, roomnr), period);
+
+        SignShop.getTimeManager().addExpirable(roomex, period);
 
         return true;
     }

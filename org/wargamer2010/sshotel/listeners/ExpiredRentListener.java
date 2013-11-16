@@ -22,7 +22,8 @@ public class ExpiredRentListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onRentExpired(SSExpiredEvent event) {
-        if(event.getExpirable().getName().equals(RoomExpiration.getNameS())) {
+        String className = RoomExpiration.class.getName();
+        if(event.getExpirable().getName().equals(className)) {
             RoomExpiration roomexpired = (RoomExpiration) event.getExpirable();
             List<Block> sellers = Storage.get().getShopsWithMiscSetting("Hotel", roomexpired.getHotel());
             for(Block block : sellers) {

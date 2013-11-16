@@ -90,16 +90,10 @@ public class SignShopListener implements Listener {
         if(!seller.getOperation().equals("hotel"))
             return;
 
-        String hotel = seller.getMisc().get("Hotel");
-        Integer roomnr;
-        try {
-            roomnr = Integer.parseInt(seller.getMisc().get("RoomNr"));
-        } catch(NumberFormatException ex) {
-            SSHotel.log("Could not parse RoomNr: " + seller.getMisc().get("RoomNr"), Level.WARNING);
+        RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
+        if(roomex == null)
             return;
-        }
-        RoomExpiration expire = new RoomExpiration(hotel, roomnr);
-        SignShop.getTimeManager().removeExpirable(expire.getEntry());
+        SignShop.getTimeManager().removeExpirable(roomex.getEntry());
 
         // SignShop can not safely assume that breaking an attachable invalidates the shop so
         // if a door is broken, we can be pretty sure the Hotel sign is useless

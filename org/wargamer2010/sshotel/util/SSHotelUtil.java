@@ -2,10 +2,15 @@
 package org.wargamer2010.sshotel.util;
 
 import java.util.List;
+import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.wargamer2010.signshop.Seller;
+import org.wargamer2010.signshop.timing.IExpirable;
 import org.wargamer2010.signshop.util.economyUtil;
+import org.wargamer2010.sshotel.SSHotel;
+import org.wargamer2010.sshotel.timing.RoomExpiration;
 
 public class SSHotelUtil {
 
@@ -53,6 +58,21 @@ public class SSHotelUtil {
         return "";
     }
 
+    public static RoomExpiration getRoomExpirationFromSeller(Seller seller) {
+        if(!seller.getOperation().equals("hotel"))
+            return null;
+
+        String hotel = seller.getMisc().get("Hotel");
+        Integer roomnr;
+        try {
+            roomnr = Integer.parseInt(seller.getMisc().get("RoomNr"));
+        } catch(NumberFormatException ex) {
+            SSHotel.log("Could not parse RoomNr: " + seller.getMisc().get("RoomNr"), Level.WARNING);
+            return null;
+        }
+        return new RoomExpiration(hotel, roomnr);
+    }
+
     private static boolean isInt(String testInt) {
         try {
             Integer.parseInt(testInt);
@@ -85,7 +105,7 @@ public class SSHotelUtil {
         returnValue.valid = true;
         return returnValue;
     }
-
+    
     public static int getPeriod(String pPeriod) {
         HotelLength period = getPeriodFromString(pPeriod);
         if(!period.valid)

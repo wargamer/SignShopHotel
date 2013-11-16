@@ -23,10 +23,6 @@ public class RoomExpiration implements IExpirable {
         return RoomExpiration.class.getCanonicalName();
     }
 
-    public static String getNameS() {
-        return RoomExpiration.class.getName();
-    }
-
     @Override
     public boolean parseEntry(Map<String, String> entry) {
         if(entry.containsKey("roomnr")) {
