@@ -26,6 +26,7 @@ import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 import org.wargamer2010.sshotel.util.SSHotelUtil;
+import static org.wargamer2010.sshotel.util.SSHotelUtil.containsHotelBlock;
 
 public class SignShopListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
@@ -66,7 +67,7 @@ public class SignShopListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onSSTouchShopEvent(SSTouchShopEvent event) {
-        if(event.isCancelled() || event.getAction() != Action.RIGHT_CLICK_BLOCK || !event.getShop().getOperation().equals("hotel"))
+        if(event.isCancelled() || event.getAction() != Action.RIGHT_CLICK_BLOCK || !SSHotelUtil.containsHotelBlock(event.getShop().getOperation()))
             return;
         if(!SSHotelUtil.isHotelPart(event.getBlock()))
             return;

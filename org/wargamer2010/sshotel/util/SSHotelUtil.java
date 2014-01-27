@@ -7,8 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
+import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.timing.IExpirable;
 import org.wargamer2010.signshop.util.economyUtil;
+import org.wargamer2010.signshop.util.signshopUtil;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 
@@ -59,7 +61,7 @@ public class SSHotelUtil {
     }
 
     public static RoomExpiration getRoomExpirationFromSeller(Seller seller) {
-        if(!seller.getOperation().equals("hotel"))
+        if(!containsHotelBlock(seller.getOperation()))
             return null;
 
         String hotel = seller.getMisc().get("Hotel");
@@ -71,6 +73,16 @@ public class SSHotelUtil {
             return null;
         }
         return new RoomExpiration(hotel, roomnr);
+    }
+
+    public static boolean containsHotelBlock(String operation) {
+        List<String> temp = SignShopConfig.getBlocks(operation);
+        if(temp == null)
+            return false;
+        for(String op : temp)
+            if(op.equalsIgnoreCase("hotelsign"))
+                return true;
+        return false;
     }
 
     private static boolean isInt(String testInt) {
@@ -105,7 +117,7 @@ public class SSHotelUtil {
         returnValue.valid = true;
         return returnValue;
     }
-    
+
     public static int getPeriod(String pPeriod) {
         HotelLength period = getPeriodFromString(pPeriod);
         if(!period.valid)
