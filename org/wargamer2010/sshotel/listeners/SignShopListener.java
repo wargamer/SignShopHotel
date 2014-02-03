@@ -68,7 +68,7 @@ public class SignShopListener implements Listener {
     }
 
     private boolean isOpenDoorInteraction(Action ac, Block block) {
-        if(ac == Action.PHYSICAL && block.getType() == Material.getMaterial("STONE_PLATE"))
+        if(ac == Action.PHYSICAL && block.getType().getData() == PressurePlate.class)
             return true;
         return ac == Action.RIGHT_CLICK_BLOCK;
     }
