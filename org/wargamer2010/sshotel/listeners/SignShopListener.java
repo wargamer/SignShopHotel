@@ -1,17 +1,12 @@
 
 package org.wargamer2010.sshotel.listeners;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.material.PressurePlate;
 import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.blocks.SSDoor;
@@ -21,14 +16,10 @@ import org.wargamer2010.signshop.events.SSCreatedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEventType;
 import org.wargamer2010.signshop.events.SSTouchShopEvent;
-import org.wargamer2010.signshop.operations.SignShopOperationListItem;
 import org.wargamer2010.signshop.util.itemUtil;
-import org.wargamer2010.signshop.util.signshopUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 import org.wargamer2010.sshotel.util.SSHotelUtil;
-import static org.wargamer2010.sshotel.util.SSHotelUtil.containsHotelBlock;
 
 public class SignShopListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
@@ -68,7 +59,7 @@ public class SignShopListener implements Listener {
     }
 
     private boolean isOpenDoorInteraction(Action ac, Block block) {
-        if(ac == Action.PHYSICAL && block.getType().getData() == PressurePlate.class)
+        if(ac == Action.PHYSICAL)
             return true;
         return ac == Action.RIGHT_CLICK_BLOCK;
     }
@@ -77,7 +68,7 @@ public class SignShopListener implements Listener {
     public void onSSTouchShopEvent(SSTouchShopEvent event) {
         if(event.isCancelled() || !isOpenDoorInteraction(event.getAction(), event.getBlock()))
             return;
-        if(!SSHotelUtil.isHotelPart(event.getBlock()) || !SSHotelUtil.containsHotelBlock(event.getShop().getOperation()))
+        if(!SSHotelUtil.containsHotelBlock(event.getShop().getOperation()))
             return;
         Seller shop = RoomRegistration.getRoomByDoor(event.getBlock());
         if(shop == null)

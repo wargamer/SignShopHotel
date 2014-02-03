@@ -3,14 +3,11 @@ package org.wargamer2010.sshotel.util;
 
 import java.util.List;
 import java.util.logging.Level;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
-import org.wargamer2010.signshop.timing.IExpirable;
 import org.wargamer2010.signshop.util.economyUtil;
-import org.wargamer2010.signshop.util.signshopUtil;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 
@@ -31,7 +28,7 @@ public class SSHotelUtil {
     public static Block getHotelPartFromBlocklist(List<Block> blocklist) {
         Block bDoor = null;
         for(Block bBlock : blocklist) {
-            if(isHotelPart(bBlock))
+            if(bBlock.getType().toString().contains("_DOOR"))
                 bDoor = bBlock;
         }
         return bDoor;
@@ -149,13 +146,6 @@ public class SSHotelUtil {
         Sign sign = (Sign)bSign.getState();
         String line = sign.getLine(3);
         return economyUtil.parsePrice(line);
-    }
-
-    public static boolean isHotelPart(Block block) {
-        Material mat = block.getType();
-        return (mat == Material.getMaterial("WOODEN_DOOR") || mat == Material.getMaterial("IRON_DOOR") ||
-                mat == Material.getMaterial("STONE_BUTTON") || mat == Material.getMaterial("STONE_PLATE") || mat == Material.getMaterial("WOOD_PLATE") ||
-                mat == Material.getMaterial("IRON_DOOR_BLOCK"));
     }
 
     private static class HotelLength {
