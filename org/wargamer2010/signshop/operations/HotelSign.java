@@ -98,7 +98,7 @@ public class HotelSign implements SignShopOperation {
 
         Seller seller = Storage.get().getSeller(ssArgs.getSign().get().getLocation());
 
-        Float fPrice = SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get());
+        Double fPrice = SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get());
         seller.getMisc().put("Price", fPrice.toString());
         ssArgs.getPrice().set(fPrice);
 

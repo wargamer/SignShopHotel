@@ -142,7 +142,7 @@ public class SSHotelUtil {
         return temp;
     }
 
-    public static Float getNumberFromFourthLine(Block bSign) {
+    public static Double getNumberFromFourthLine(Block bSign) {
         Sign sign = (Sign)bSign.getState();
         String line = sign.getLine(3);
         return economyUtil.parsePrice(line);
