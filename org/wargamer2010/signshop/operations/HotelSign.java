@@ -1,6 +1,5 @@
 package org.wargamer2010.signshop.operations;
 
-import java.util.logging.Level;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
@@ -8,6 +7,7 @@ import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.configuration.Storage;
 import org.wargamer2010.signshop.player.SignShopPlayer;
+import org.wargamer2010.signshop.util.economyUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
@@ -54,7 +54,7 @@ public class HotelSign implements SignShopOperation {
         SignShopPlayer player = ssArgs.getPlayer().get();
 
         if(SSHotel.getMaxRentsPerPerson() != 0 && !player.isOp()) {
-            if(RoomRegistration.getAmountOfRentsForPlayer(player.getName()) >= SSHotel.getMaxRentsPerPerson()) {
+            if(RoomRegistration.getAmountOfRentsForPlayer(player) >= SSHotel.getMaxRentsPerPerson()) {
                 ssArgs.setMessagePart("!maxrents", Integer.toString(SSHotel.getMaxRentsPerPerson()));
                 player.sendMessage(SignShopConfig.getError("max_rents_reached", ssArgs.getMessageParts()));
                 return false;
@@ -67,18 +67,22 @@ public class HotelSign implements SignShopOperation {
         }
 
         Seller seller = Storage.get().getSeller(ssArgs.getSign().get().getLocation());
-        String renter = RoomRegistration.getPlayerFromShop(seller);
+        SignShopPlayer renter = RoomRegistration.getPlayerFromShop(seller);
         ssArgs.setMessagePart("!timeleft", RoomRegistration.getTimeLeftForRoom(seller));
 
-        if(renter.equals(ssArgs.getPlayer().get().getName())) {
+        if(renter != null)
+            ssArgs.getPrice().set(economyUtil.parsePrice(seller.getMisc().get("Price")));
+        else
+            ssArgs.getPrice().set(SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get()));
+
+        if(renter != null && renter.compareTo(ssArgs.getPlayer().get())) {
             ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_self_timeleft", ssArgs.getMessageParts()));
             return false;
-        } else if(!renter.isEmpty()) {
+        } else if(renter != null) {
             ssArgs.getPlayer().get().sendMessage(SignShopConfig.getError("already_rented_other_timeleft", ssArgs.getMessageParts()));
             return false;
         }
 
-        ssArgs.getPrice().set(SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get()));
 
         return true;
     }
@@ -92,14 +96,13 @@ public class HotelSign implements SignShopOperation {
         ssArgs.setMessagePart("!hotel", ssArgs.miscSettings.get("Hotel"));
         ssArgs.setMessagePart("!roomnr", ssArgs.miscSettings.get("RoomNr"));
 
-        String playername = ssArgs.getPlayer().get().getName();
         Seller seller = Storage.get().getSeller(ssArgs.getSign().get().getLocation());
 
         Float fPrice = SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get());
         seller.getMisc().put("Price", fPrice.toString());
         ssArgs.getPrice().set(fPrice);
 
-        RoomRegistration.setPlayerForShop(seller, playername);
+        RoomRegistration.setPlayerForShop(seller, ssArgs.getPlayer().get());
 
         Integer period = SSHotelUtil.getPeriod(seller.getMisc().get("Period"));
 

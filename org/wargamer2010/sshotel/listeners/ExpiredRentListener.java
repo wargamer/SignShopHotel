@@ -13,8 +13,6 @@ import org.wargamer2010.signshop.events.SSExpiredEvent;
 import org.wargamer2010.signshop.operations.SignShopArguments;
 import org.wargamer2010.signshop.operations.SignShopArgumentsType;
 import org.wargamer2010.signshop.operations.SignShopEventHandler;
-import org.wargamer2010.signshop.player.PlayerIdentifier;
-import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.itemUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
@@ -32,10 +30,10 @@ public class ExpiredRentListener implements Listener {
                 if(seller != null) {
                     if(!seller.getMisc().containsKey("RoomNr") || !seller.getMisc().get("RoomNr").equals(Integer.toString(roomexpired.getRoomNr())))
                         continue;
-                    SignShopArguments ssArgs = new SignShopArguments(seller, PlayerIdentifier.getByName(RoomRegistration.getPlayerFromShop(seller)), SignShopArgumentsType.Run);
+                    SignShopArguments ssArgs = new SignShopArguments(seller, RoomRegistration.getPlayerFromShop(seller), SignShopArgumentsType.Run);
                     SignShopEventHandler.dispatchEvent(ssArgs, event, seller.getOperation());
 
-                    RoomRegistration.setPlayerForShop(seller, "");
+                    RoomRegistration.setPlayerForShop(seller, null);
 
                     for(Block door : seller.getActivatables()) {
                         if(itemUtil.clickedDoor(door))

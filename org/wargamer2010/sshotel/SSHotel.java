@@ -12,8 +12,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
+import org.wargamer2010.signshop.configuration.Storage;
 import org.wargamer2010.signshop.configuration.configUtil;
 import org.wargamer2010.signshop.metrics.setupMetrics;
 import org.wargamer2010.signshop.player.SignShopPlayer;
@@ -76,8 +78,28 @@ public class SSHotel extends JavaPlugin {
                 log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
         }
 
+        fixStaleHotelRents();
+
         setInstance(this);
         log("Enabled", Level.INFO);
+    }
+
+    /**
+     * If the server didn't propertly shutdown it is possible for rents to become corrupt
+     * This method removes stale rents (i.e. rents which have a renter but no left but)
+     */
+    private void fixStaleHotelRents() {
+        for(Seller seller : Storage.get().getSellers()) {
+            if(seller == null)
+                continue;
+            String timeleft = RoomRegistration.getTimeLeftForRoom(seller);
+            if(timeleft.equalsIgnoreCase("N/A") && RoomRegistration.getPlayerFromShop(seller) != null) {
+                SignShop.log(String.format("Fixing stale rent for hotelroom at '%s'",
+                        signshopUtil.convertLocationToString(seller.getSignLocation()))
+                        , Level.WARNING);
+                RoomRegistration.setPlayerForShop(seller, null);
+            }
+        }
     }
 
     @Override

@@ -8,7 +8,8 @@ import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.SignShop;
 import org.wargamer2010.signshop.configuration.Storage;
-import org.wargamer2010.signshop.timing.IExpirable;
+import org.wargamer2010.signshop.player.PlayerIdentifier;
+import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.SSTimeUtil;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 import org.wargamer2010.sshotel.util.SSHotelUtil;
@@ -46,27 +47,34 @@ public class RoomRegistration {
             return sellers.get(0);
     }
 
-    public static String getPlayerFromShop(Seller seller) {
+    public static SignShopPlayer getPlayerFromShop(Seller seller) {
         if(seller.getMisc().containsKey("Renter")) {
-            return seller.getMisc().get("Renter");
+            String renter = seller.getMisc().get("Renter");
+            if(renter == null || renter.isEmpty())
+                return null;
+            return PlayerIdentifier.getPlayerFromString(renter);
         }
-        return "";
+        return null;
     }
 
-    public static void setPlayerForShop(Seller seller, String player) {
-        seller.getMisc().put("Renter", player);
+    public static void setPlayerForShop(Seller seller, SignShopPlayer player) {
+        String playerString = "";
+        if(player != null)
+            playerString = player.GetIdentifier().toString();
+        seller.getMisc().put("Renter", playerString);
 
         Sign sign = (Sign) seller.getSign().getState();
 
-        if(!player.isEmpty())
-            sign.setLine(3, (ChatColor.DARK_GREEN + player));
+        if(player != null)
+            sign.setLine(3, (ChatColor.DARK_GREEN + player.getName()));
         else
             sign.setLine(3, seller.getMisc().get("Price"));
         sign.update();
+        Storage.get().SafeSave();
     }
 
-    public static int getAmountOfRentsForPlayer(String player) {
-        return (Storage.get().getShopsWithMiscSetting("Renter", player).size());
+    public static int getAmountOfRentsForPlayer(SignShopPlayer player) {
+        return (Storage.get().getShopsWithMiscSetting("Renter", player.GetIdentifier().toString()).size());
     }
 
     /**

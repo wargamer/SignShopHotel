@@ -16,6 +16,7 @@ import org.wargamer2010.signshop.events.SSCreatedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEvent;
 import org.wargamer2010.signshop.events.SSDestroyedEventType;
 import org.wargamer2010.signshop.events.SSTouchShopEvent;
+import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.itemUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
@@ -73,10 +74,10 @@ public class SignShopListener implements Listener {
         Seller shop = RoomRegistration.getRoomByDoor(event.getBlock());
         if(shop == null)
             return;
-        String renter = RoomRegistration.getPlayerFromShop(shop);
+        SignShopPlayer renter = RoomRegistration.getPlayerFromShop(shop);
         event.setMessagePart("!renttime", SSHotelUtil.getPrintablePeriod(event.getShop().getMisc().get("Period")));
 
-        if((renter.isEmpty() || !renter.equals(event.getPlayer().getName())) && !event.getPlayer().isOp()) {
+        if((renter == null || !renter.compareTo(event.getPlayer())) && !event.getPlayer().isOp()) {
             event.setCancelled(true);
             // Sending messages on Physical interaction will cause spam
             if(event.getAction() != Action.PHYSICAL)
