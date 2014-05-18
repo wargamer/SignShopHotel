@@ -71,7 +71,7 @@ public class HotelSign implements SignShopOperation {
         ssArgs.setMessagePart("!timeleft", RoomRegistration.getTimeLeftForRoom(seller));
 
         if(renter != null)
-            ssArgs.getPrice().set(economyUtil.parsePrice(seller.getMisc().get("Price")));
+            ssArgs.getPrice().set(economyUtil.parsePrice(seller.getMisc("Price")));
         else
             ssArgs.getPrice().set(SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get()));
 
@@ -99,12 +99,12 @@ public class HotelSign implements SignShopOperation {
         Seller seller = Storage.get().getSeller(ssArgs.getSign().get().getLocation());
 
         Double fPrice = SSHotelUtil.getNumberFromFourthLine(ssArgs.getSign().get());
-        seller.getMisc().put("Price", fPrice.toString());
+        seller.addMisc("Price", fPrice.toString());
         ssArgs.getPrice().set(fPrice);
 
         RoomRegistration.setPlayerForShop(seller, ssArgs.getPlayer().get());
 
-        Integer period = SSHotelUtil.getPeriod(seller.getMisc().get("Period"));
+        Integer period = SSHotelUtil.getPeriod(seller.getMisc("Period"));
 
         RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
         if(roomex == null)

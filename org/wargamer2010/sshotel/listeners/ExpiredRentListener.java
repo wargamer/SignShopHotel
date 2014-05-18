@@ -28,7 +28,7 @@ public class ExpiredRentListener implements Listener {
             for(Block block : sellers) {
                 Seller seller = Storage.get().getSeller(block.getLocation());
                 if(seller != null) {
-                    if(!seller.getMisc().containsKey("RoomNr") || !seller.getMisc().get("RoomNr").equals(Integer.toString(roomexpired.getRoomNr())))
+                    if(!seller.hasMisc("RoomNr") || !seller.getMisc("RoomNr").equals(Integer.toString(roomexpired.getRoomNr())))
                         continue;
                     SignShopArguments ssArgs = new SignShopArguments(seller, RoomRegistration.getPlayerFromShop(seller), SignShopArgumentsType.Run);
                     SignShopEventHandler.dispatchEvent(ssArgs, event, seller.getOperation());

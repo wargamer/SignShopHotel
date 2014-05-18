@@ -28,9 +28,9 @@ public class RoomRegistration {
     }
 
     public static int getRoomNumber(Seller seller) {
-        if(seller.getMisc().containsKey("RoomNr")) {
+        if(seller.hasMisc("RoomNr")) {
             try {
-                return Integer.parseInt(seller.getMisc().get("RoomNr"));
+                return Integer.parseInt(seller.getMisc("RoomNr"));
             } catch(NumberFormatException ex) {
                 return -1;
             }
@@ -48,8 +48,8 @@ public class RoomRegistration {
     }
 
     public static SignShopPlayer getPlayerFromShop(Seller seller) {
-        if(seller.getMisc().containsKey("Renter")) {
-            String renter = seller.getMisc().get("Renter");
+        if(seller.hasMisc("Renter")) {
+            String renter = seller.getMisc("Renter");
             if(renter == null || renter.isEmpty())
                 return null;
             return PlayerIdentifier.getPlayerFromString(renter);
@@ -61,14 +61,14 @@ public class RoomRegistration {
         String playerString = "";
         if(player != null)
             playerString = player.GetIdentifier().toString();
-        seller.getMisc().put("Renter", playerString);
+        seller.addMisc("Renter", playerString);
 
         Sign sign = (Sign) seller.getSign().getState();
 
         if(player != null)
             sign.setLine(3, (ChatColor.DARK_GREEN + player.getName()));
         else
-            sign.setLine(3, seller.getMisc().get("Price"));
+            sign.setLine(3, seller.getMisc("Price"));
         sign.update();
         Storage.get().SafeSave();
     }

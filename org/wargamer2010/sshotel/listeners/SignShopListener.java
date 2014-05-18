@@ -75,7 +75,7 @@ public class SignShopListener implements Listener {
         if(shop == null)
             return;
         SignShopPlayer renter = RoomRegistration.getPlayerFromShop(shop);
-        event.setMessagePart("!renttime", SSHotelUtil.getPrintablePeriod(event.getShop().getMisc().get("Period")));
+        event.setMessagePart("!renttime", SSHotelUtil.getPrintablePeriod(event.getShop().getMisc("Period")));
 
         if((renter == null || !renter.compareTo(event.getPlayer())) && !event.getPlayer().isOp()) {
             event.setCancelled(true);

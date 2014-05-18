@@ -61,12 +61,12 @@ public class SSHotelUtil {
         if(!containsHotelBlock(seller.getOperation()))
             return null;
 
-        String hotel = seller.getMisc().get("Hotel");
+        String hotel = seller.getMisc("Hotel");
         Integer roomnr;
         try {
-            roomnr = Integer.parseInt(seller.getMisc().get("RoomNr"));
+            roomnr = Integer.parseInt(seller.getMisc("RoomNr"));
         } catch(NumberFormatException ex) {
-            SSHotel.log("Could not parse RoomNr: " + seller.getMisc().get("RoomNr"), Level.WARNING);
+            SSHotel.log("Could not parse RoomNr: " + seller.getMisc("RoomNr"), Level.WARNING);
             return null;
         }
         return new RoomExpiration(hotel, roomnr);
