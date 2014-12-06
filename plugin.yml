@@ -7,4 +7,7 @@ author: Wargamer2010
 commands:
   signshophotel:
     description: Admin commands for SignShopHotel
-    usage: /signshophotel [reload]
+    usage: /signshophotel [reload|boot|help]
+  sshotel:
+    description: Admin commands for SignShopHotel
+    usage: /signshophotel [reload|boot|help]

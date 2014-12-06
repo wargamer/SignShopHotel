@@ -6,8 +6,12 @@ import java.util.logging.Level;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
+import org.wargamer2010.signshop.blocks.SSDoor;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
+import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.economyUtil;
+import org.wargamer2010.signshop.util.itemUtil;
+import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.SSHotel;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 
@@ -80,6 +84,26 @@ public class SSHotelUtil {
             if(op.equalsIgnoreCase("hotelsign"))
                 return true;
         return false;
+    }
+
+    /**
+     * Boots the current renter from the room indicated by the seller
+     *
+     * @param seller Shop
+     * @return Player who was booted or null if there was not renter
+     */
+    public static SignShopPlayer bootPlayerFromRoom(Seller seller) {
+        if(RoomRegistration.getPlayerFromShop(seller) == null)
+            return null;
+        SignShopPlayer currentRenter = RoomRegistration.getPlayerFromShop(seller);
+        RoomRegistration.setPlayerForShop(seller, null);
+
+        for(Block door : seller.getActivatables()) {
+            if(itemUtil.clickedDoor(door))
+                (new SSDoor(door)).setOpen(false);
+        }
+
+        return currentRenter;
     }
 
     private static boolean isInt(String testInt) {

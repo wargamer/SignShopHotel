@@ -47,3 +47,12 @@ errors:
   already_registered: This room is already registered!
   no_entry: You have not rented this room, so you are not allowed to enter!
   max_rents_reached: You have reached the maximum amount of rooms you can rent. It is set at !maxrents room(s) per person.
+  reloaded: SignShopHotel has been reloaded
+  cant_use_boot_from_console: Command cannot be used from console without a username
+  booted_from_sign: Successfully booted renter from the room you're looking at
+  no_player_to_boot: No player is currently renting this Hotel Room
+  block_not_hotel_room: The block you are looking at is not a valid Hotel Room
+  player_does_not_exist: Player does not exist on this server
+  booted_from_all_rooms: Player has been successfully booted from all rooms
+  you_have_been_booted_sign: You have been booted from room !roomnr at Hotel !hotel. Contact the Server Administrator if you have questions.
+  you_have_been_booted_all: You have been booted from all Hotel rooms you are currently renting. Contact the Server Administrator if you have questions.

@@ -74,7 +74,11 @@ public class RoomRegistration {
     }
 
     public static int getAmountOfRentsForPlayer(SignShopPlayer player) {
-        return (Storage.get().getShopsWithMiscSetting("Renter", player.GetIdentifier().toString()).size());
+        return getRentsForPlayer(player).size();
+    }
+
+    public static List<Block> getRentsForPlayer(SignShopPlayer player) {
+        return Storage.get().getShopsWithMiscSetting("Renter", player.GetIdentifier().toString());
     }
 
     /**

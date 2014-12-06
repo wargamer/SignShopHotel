@@ -16,6 +16,7 @@ import org.wargamer2010.signshop.operations.SignShopEventHandler;
 import org.wargamer2010.signshop.util.itemUtil;
 import org.wargamer2010.sshotel.RoomRegistration;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
+import org.wargamer2010.sshotel.util.SSHotelUtil;
 
 public class ExpiredRentListener implements Listener {
 
@@ -33,12 +34,7 @@ public class ExpiredRentListener implements Listener {
                     SignShopArguments ssArgs = new SignShopArguments(seller, RoomRegistration.getPlayerFromShop(seller), SignShopArgumentsType.Run);
                     SignShopEventHandler.dispatchEvent(ssArgs, event, seller.getOperation());
 
-                    RoomRegistration.setPlayerForShop(seller, null);
-
-                    for(Block door : seller.getActivatables()) {
-                        if(itemUtil.clickedDoor(door))
-                            (new SSDoor(door)).setOpen(false);
-                    }
+                    SSHotelUtil.bootPlayerFromRoom(seller);
                 }
             }
         }

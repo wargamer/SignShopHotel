@@ -14,18 +14,20 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.wargamer2010.signshop.Seller;
 import org.wargamer2010.signshop.SignShop;
-import org.wargamer2010.signshop.configuration.SignShopConfig;
-import org.wargamer2010.signshop.configuration.Storage;
-import org.wargamer2010.signshop.configuration.configUtil;
+import org.wargamer2010.signshop.commands.CommandDispatcher;
+import org.wargamer2010.signshop.configuration.*;
 import org.wargamer2010.signshop.metrics.setupMetrics;
 import org.wargamer2010.signshop.player.SignShopPlayer;
+import org.wargamer2010.signshop.util.commandUtil;
 import org.wargamer2010.signshop.util.signshopUtil;
+import org.wargamer2010.sshotel.commands.*;
 import org.wargamer2010.sshotel.listeners.ExpiredRentListener;
 import org.wargamer2010.sshotel.listeners.SignShopListener;
 
 public class SSHotel extends JavaPlugin {
     private static final Logger logger = Logger.getLogger("Minecraft");
     private static SSHotel instance = null;
+    private static CommandDispatcher commandDispatcher = new CommandDispatcher();
 
     private static int MaxRentsPerPerson = 0;
 
@@ -62,6 +64,8 @@ public class SSHotel extends JavaPlugin {
                 SignShopConfig.registerMessages(entry.getKey(), entry.getValue());
             }
         }
+
+        setupCommands();
 
         SignShopConfig.addLinkable("WOODEN_DOOR", "door");
         SignShopConfig.addLinkable("IRON_DOOR", "door");
@@ -110,25 +114,9 @@ public class SSHotel extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
         String commandName = cmd.getName().toLowerCase();
-        if(!commandName.equalsIgnoreCase("signshophotel"))
+        if(!commandName.equalsIgnoreCase("signshophotel") && !commandName.equalsIgnoreCase("sshotel"))
             return true;
-        if(args.length == 0 || !args[0].equalsIgnoreCase("reload"))
-            return false;
-
-        SignShopPlayer player = null;
-        if(sender instanceof Player)
-            player = new SignShopPlayer((Player) sender);
-
-        if(!signshopUtil.hasOPForCommand(player))
-            return true;
-
-        Bukkit.getServer().getPluginManager().disablePlugin(SSHotel.getInstance());
-        Bukkit.getServer().getPluginManager().enablePlugin(SSHotel.getInstance());
-        log("Reloaded", Level.INFO);
-        if(player != null)
-            player.sendMessage(ChatColor.GREEN + "SignShopHotel has been reloaded");
-
-        return true;
+        return commandUtil.handleCommand(sender, cmd, commandLabel, args, commandDispatcher);
     }
 
     private void createDir() {
@@ -152,6 +140,13 @@ public class SSHotel extends JavaPlugin {
         instance = newinstance;
     }
 
+    private void setupCommands() {
+        commandDispatcher.registerHandler("reload", ReloadHandler.getInstance());
+        commandDispatcher.registerHandler("boot", BootHandler.getInstance());
+        commandDispatcher.registerHandler("helper", HelpHandler.getInstance());
+        commandDispatcher.registerHandler("", HelpHandler.getInstance());
+    }
+
     /**
      * Gets the instance of SSHotel
      * @return instance
@@ -162,5 +157,13 @@ public class SSHotel extends JavaPlugin {
 
     public static int getMaxRentsPerPerson() {
         return MaxRentsPerPerson;
+    }
+
+    /**
+     * Returns the SignShopHotel Command Dispatcher
+     * @return CommandDispatcher
+     */
+    public static CommandDispatcher getCommandDispatcher() {
+        return commandDispatcher;
     }
 }
