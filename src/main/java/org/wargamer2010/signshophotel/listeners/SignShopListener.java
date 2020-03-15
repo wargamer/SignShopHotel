@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.listeners;
+package org.wargamer2010.signshophotel.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -18,9 +18,9 @@ import org.wargamer2010.signshop.events.SSDestroyedEventType;
 import org.wargamer2010.signshop.events.SSTouchShopEvent;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.itemUtil;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.timing.RoomExpiration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.timing.RoomExpiration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
 
 public class SignShopListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)

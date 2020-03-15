@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.commands;
+package org.wargamer2010.signshophotel.commands;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,8 +11,8 @@ import org.wargamer2010.signshop.player.PlayerIdentifier;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.commandUtil;
 import org.wargamer2010.signshop.util.signshopUtil;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

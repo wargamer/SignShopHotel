@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.commands;
+package org.wargamer2010.signshophotel.commands;
 
 import org.wargamer2010.signshop.commands.ICommandHandler;
 import org.wargamer2010.signshop.player.SignShopPlayer;

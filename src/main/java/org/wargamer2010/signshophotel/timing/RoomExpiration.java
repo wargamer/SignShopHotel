@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.timing;
+package org.wargamer2010.signshophotel.timing;
 
 import org.wargamer2010.signshop.timing.IExpirable;
 

@@ -8,10 +8,10 @@ import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.configuration.Storage;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.economyUtil;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.SSHotel;
-import org.wargamer2010.sshotel.timing.RoomExpiration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.SSHotel;
+import org.wargamer2010.signshophotel.timing.RoomExpiration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
 
 public class HotelSign implements SignShopOperation {
     @Override

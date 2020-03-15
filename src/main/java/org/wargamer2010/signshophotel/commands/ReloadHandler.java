@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.commands;
+package org.wargamer2010.signshophotel.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,7 +8,7 @@ import org.wargamer2010.signshop.commands.ICommandHandler;
 import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.signshopUtil;
-import org.wargamer2010.sshotel.SSHotel;
+import org.wargamer2010.signshophotel.SSHotel;
 
 import java.util.logging.Level;
 
