@@ -1,5 +1,6 @@
 package org.wargamer2010.sshotel;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,9 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SSHotel extends JavaPlugin {
+    private static final int B_STATS_ID = 6768;
     private static final Logger logger = Logger.getLogger("Minecraft");
     private static SSHotel instance = null;
     private static CommandDispatcher commandDispatcher = new CommandDispatcher();
+
 
     private static int MaxRentsPerPerson = 0;
 
@@ -80,6 +83,11 @@ public class SSHotel extends JavaPlugin {
         fixStaleHotelRents();
 
         setInstance(this);
+        //Enable metrics
+        if (SignShopConfig.metricsEnabled()) {
+            Metrics metrics = new Metrics(this, B_STATS_ID);
+            log("Thank you for enabling metrics!", Level.INFO);
+        }
         log("Enabled", Level.INFO);
     }
 

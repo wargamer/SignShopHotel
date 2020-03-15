@@ -21,7 +21,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.13-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.23" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations-java5:19.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.wargamer2010:SignShop:3.3.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.wargamer2010:SignShop:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.bstats:bstats-bukkit:1.7" level="project" />
   </component>
 </module>

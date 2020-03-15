@@ -43,6 +43,7 @@
             <groupId>org.wargamer2010</groupId>
             <artifactId>SignShop</artifactId>
             <version>3.3.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
