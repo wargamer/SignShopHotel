@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel;
+package org.wargamer2010.signshophotel;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -10,8 +10,8 @@ import org.wargamer2010.signshop.configuration.Storage;
 import org.wargamer2010.signshop.player.PlayerIdentifier;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.SSTimeUtil;
-import org.wargamer2010.sshotel.timing.RoomExpiration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.timing.RoomExpiration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
 
 import java.util.List;
 

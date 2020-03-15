@@ -1,5 +1,5 @@
 name: SignShopHotel
-main: org.wargamer2010.sshotel.SSHotel
+main: org.wargamer2010.signshophotel.SSHotel
 api-version: "1.13"
 version: "${project.version}"
 dev-url: http://dev.bukkit.org/server-mods/signshop

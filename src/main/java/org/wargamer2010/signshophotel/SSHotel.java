@@ -1,4 +1,4 @@
-package org.wargamer2010.sshotel;
+package org.wargamer2010.signshophotel;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -16,11 +16,11 @@ import org.wargamer2010.signshop.configuration.Storage;
 import org.wargamer2010.signshop.configuration.configUtil;
 import org.wargamer2010.signshop.util.commandUtil;
 import org.wargamer2010.signshop.util.signshopUtil;
-import org.wargamer2010.sshotel.commands.BootHandler;
-import org.wargamer2010.sshotel.commands.HelpHandler;
-import org.wargamer2010.sshotel.commands.ReloadHandler;
-import org.wargamer2010.sshotel.listeners.ExpiredRentListener;
-import org.wargamer2010.sshotel.listeners.SignShopListener;
+import org.wargamer2010.signshophotel.commands.BootHandler;
+import org.wargamer2010.signshophotel.commands.HelpHandler;
+import org.wargamer2010.signshophotel.commands.ReloadHandler;
+import org.wargamer2010.signshophotel.listeners.ExpiredRentListener;
+import org.wargamer2010.signshophotel.listeners.SignShopListener;
 
 import java.util.HashMap;
 import java.util.Map;

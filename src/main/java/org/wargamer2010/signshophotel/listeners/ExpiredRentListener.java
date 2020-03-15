@@ -1,5 +1,5 @@
 
-package org.wargamer2010.sshotel.listeners;
+package org.wargamer2010.signshophotel.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -11,9 +11,9 @@ import org.wargamer2010.signshop.events.SSExpiredEvent;
 import org.wargamer2010.signshop.operations.SignShopArguments;
 import org.wargamer2010.signshop.operations.SignShopArgumentsType;
 import org.wargamer2010.signshop.operations.SignShopEventHandler;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.timing.RoomExpiration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.timing.RoomExpiration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
 
 import java.util.List;
 
