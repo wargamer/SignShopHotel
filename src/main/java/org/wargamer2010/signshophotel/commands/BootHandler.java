@@ -1,8 +1,6 @@
 
-package org.wargamer2010.sshotel.commands;
+package org.wargamer2010.signshophotel.commands;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.wargamer2010.signshop.Seller;
@@ -13,8 +11,11 @@ import org.wargamer2010.signshop.player.PlayerIdentifier;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.commandUtil;
 import org.wargamer2010.signshop.util.signshopUtil;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.util.SSHotelUtil;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.util.SSHotelUtil;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class BootHandler implements ICommandHandler {
     private static ICommandHandler instance = new BootHandler();
@@ -27,12 +28,17 @@ public class BootHandler implements ICommandHandler {
         return instance;
     }
 
+    // Should use an alternative method here, but nothing seems to work right now
+    private static Block getTarget(Player entity) {
+        return entity.getTargetBlock(null, 200);
+    }
+
     @Override
     public boolean handle(String command, String[] args, SignShopPlayer player) {
-        if(!signshopUtil.hasOPForCommand(player))
+        if (signshopUtil.notOPForCommand(player))
             return true;
-        if(args.length == 0) {
-            if(player == null) {
+        if (args.length == 0) {
+            if (player == null) {
                 commandUtil.sendToPlayerOrConsole(SignShopConfig.getError("cant_use_boot_from_console", null), player);
                 return true;
             }
@@ -40,7 +46,7 @@ public class BootHandler implements ICommandHandler {
             Player rawPlayer = player.getPlayer();
             Block block = getTarget(rawPlayer);
             Seller seller = Storage.get().getSeller(block.getLocation());
-            Map<String, String> messageParts = new LinkedHashMap<String, String>();
+            Map<String, String> messageParts = new LinkedHashMap<>();
 
             if(seller != null) {
                 messageParts.put("!hotel", seller.getMisc("Hotel"));
@@ -59,7 +65,6 @@ public class BootHandler implements ICommandHandler {
                 player.sendMessage(SignShopConfig.getError("block_not_hotel_room", messageParts));
             }
 
-            return true;
         } else {
             String playerName = args[0];
             SignShopPlayer targetPlayer = PlayerIdentifier.getByName(playerName);
@@ -68,18 +73,13 @@ public class BootHandler implements ICommandHandler {
                 return true;
             }
 
-            for(Block block : RoomRegistration.getRentsForPlayer(targetPlayer)) {
+            for (Block block : RoomRegistration.getRentsForPlayer(targetPlayer)) {
                 SSHotelUtil.bootPlayerFromRoom(Storage.get().getSeller(block.getLocation()));
             }
 
-            commandUtil.sendToPlayerOrConsole(SignShopConfig.getError("booted_from_all_rooms", null) , player);
+            commandUtil.sendToPlayerOrConsole(SignShopConfig.getError("booted_from_all_rooms", null), player);
             targetPlayer.sendMessage(SignShopConfig.getError("you_have_been_booted_all", null));
-            return true;
         }
-    }
-
-    @SuppressWarnings("deprecation") // Should use an alternative method here, but nothing seems to work right now
-    private static Block getTarget(Player entity) {
-        return entity.getTargetBlock(null, 200);
+        return true;
     }
 }

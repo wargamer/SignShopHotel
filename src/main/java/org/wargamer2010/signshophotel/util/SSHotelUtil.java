@@ -1,8 +1,6 @@
 
-package org.wargamer2010.sshotel.util;
+package org.wargamer2010.signshophotel.util;
 
-import java.util.List;
-import java.util.logging.Level;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.wargamer2010.signshop.Seller;
@@ -11,9 +9,12 @@ import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.economyUtil;
 import org.wargamer2010.signshop.util.itemUtil;
-import org.wargamer2010.sshotel.RoomRegistration;
-import org.wargamer2010.sshotel.SSHotel;
-import org.wargamer2010.sshotel.timing.RoomExpiration;
+import org.wargamer2010.signshophotel.SSHotel;
+import org.wargamer2010.signshophotel.RoomRegistration;
+import org.wargamer2010.signshophotel.timing.RoomExpiration;
+
+import java.util.List;
+import java.util.logging.Level;
 
 public class SSHotelUtil {
 
@@ -21,32 +22,39 @@ public class SSHotelUtil {
 
     }
 
-    private static enum Period {
-        w,
-        d,
-        h,
-        m,
-        s,
-    };
-
-    public static Block getHotelPartFromBlocklist(List<Block> blocklist) {
+    public static Block getHotelPartFromBlockList(List<Block> blockList) {
         Block bDoor = null;
-        for(Block bBlock : blocklist) {
-            if(bBlock.getType().toString().contains("_DOOR"))
+        for (Block bBlock : blockList) {
+            if (bBlock.getType().toString().contains("_DOOR"))
                 bDoor = bBlock;
         }
         return bDoor;
     }
 
+    public static RoomExpiration getRoomExpirationFromSeller(Seller seller) {
+        if (doesNotContainHotelBlock(seller.getOperation()))
+            return null;
+
+        String hotel = seller.getMisc("Hotel");
+        int roomnr;
+        try {
+            roomnr = Integer.parseInt(seller.getMisc("RoomNr"));
+        } catch (NumberFormatException ex) {
+            SSHotel.log("Could not parse RoomNr: " + seller.getMisc("RoomNr"), Level.WARNING);
+            return null;
+        }
+        return new RoomExpiration(hotel, roomnr);
+    }
+
     public static String getPrintablePeriod(String pPeriod) {
         HotelLength period = getPeriodFromString(pPeriod);
-        if(!period.valid)
+        if (!period.valid)
             return "";
 
         String sAmount = Integer.toString(period.length);
         String append = (period.length > 1 ? "s" : "");
 
-        switch(period.unit) {
+        switch (period.unit) {
             case w:
                 return (sAmount + " week" + append);
             case d:
@@ -61,28 +69,23 @@ public class SSHotelUtil {
         return "";
     }
 
-    public static RoomExpiration getRoomExpirationFromSeller(Seller seller) {
-        if(!containsHotelBlock(seller.getOperation()))
-            return null;
-
-        String hotel = seller.getMisc("Hotel");
-        Integer roomnr;
-        try {
-            roomnr = Integer.parseInt(seller.getMisc("RoomNr"));
-        } catch(NumberFormatException ex) {
-            SSHotel.log("Could not parse RoomNr: " + seller.getMisc("RoomNr"), Level.WARNING);
-            return null;
-        }
-        return new RoomExpiration(hotel, roomnr);
+    public static boolean doesNotContainHotelBlock(String operation) {
+        List<String> temp = SignShopConfig.getBlocks(operation);
+        if (temp == null)
+            return true;
+        for (String op : temp)
+            if (op.equalsIgnoreCase("hotelsign"))
+                return false;
+        return true;
     }
 
-    public static boolean containsHotelBlock(String operation) {
-        List<String> temp = SignShopConfig.getBlocks(operation);
-        if(temp == null)
-            return false;
-        for(String op : temp)
-            if(op.equalsIgnoreCase("hotelsign"))
-                return true;
+    private static boolean isInt(String testInt) {
+        try {
+            Integer.parseInt(testInt);
+            return true;
+        } catch (NumberFormatException ignored) {
+        }
+
         return false;
     }
 
@@ -93,35 +96,35 @@ public class SSHotelUtil {
      * @return Player who was booted or null if there was not renter
      */
     public static SignShopPlayer bootPlayerFromRoom(Seller seller) {
-        if(RoomRegistration.getPlayerFromShop(seller) == null)
+        if (RoomRegistration.getPlayerFromShop(seller) == null)
             return null;
         SignShopPlayer currentRenter = RoomRegistration.getPlayerFromShop(seller);
         RoomRegistration.setPlayerForShop(seller, null);
 
-        for(Block door : seller.getActivatables()) {
-            if(itemUtil.clickedDoor(door))
+        for (Block door : seller.getActivatables()) {
+            if (itemUtil.clickedDoor(door))
                 (new SSDoor(door)).setOpen(false);
         }
 
         return currentRenter;
     }
 
-    private static boolean isInt(String testInt) {
-        try {
-            Integer.parseInt(testInt);
-            return true;
-        } catch(NumberFormatException ex) { }
-
-        return false;
+    private enum Period {
+        w,
+        d,
+        h,
+        m,
+        s,
     }
 
     private static HotelLength getPeriodFromString(String pPeriod) {
         HotelLength returnValue = new HotelLength();
         StringBuilder number_b = new StringBuilder(pPeriod.length());
         StringBuilder period_b = new StringBuilder(pPeriod.length());
-        for(int i = 0; i < pPeriod.length(); i++) {
-            String testInt = ""; testInt += pPeriod.charAt(i);
-            if(isInt(testInt))
+        for (int i = 0; i < pPeriod.length(); i++) {
+            String testInt = "";
+            testInt += pPeriod.charAt(i);
+            if (isInt(testInt))
                 number_b.append(pPeriod.charAt(i));
             else
                 period_b.append(pPeriod.charAt(i));

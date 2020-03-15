@@ -1,0 +1,58 @@
+#
+# This is an extension plugin to SignShop, read the SignShop Quick Reference if you need help with this config          #
+#                                                                                                                       #
+# You can also visit our Bukkit page at tiny.cc/SignShop for any additional questions, or comments                      #
+#                                                                                                                       #
+# The syntax for Hotel signs is:                                                                                        #
+#                                                                                                                       #
+# Line 1 - [Hotel]                                                                                                      #
+# Line 2 - The name of the hotel this room belongs to                                                                   #
+# Line 3 - The time this sign should rent the room for s, m, h, d, w                                                    #
+#          (If you want to rent a room for 1 day and 2 hours, you would just type "26h" on the third line)              #
+# Line 4 - The price of renting the room                                                                                #
+#                                                                                                                       #
+
+# Defines the maximum amount of rooms a player can rent at one time
+# This limit can be bypassed by anyone with OP or the SuperAdmin SignShop permission node
+# If this setting is set to 0, the amount of rents is unlimited
+MaxRentsPerPerson: 0
+
+signs:
+  Hotel: HotelSign,takePlayerMoney,giveOwnerMoney
+  iHotel: HotelSign,takePlayerMoney
+messages:
+  setup:
+    Hotel: You have created a Hotel sign that costs !price to rent a room for !renttime!
+    iHotel: You have created an iHotel sign that costs !price to rent a room for !renttime!
+  confirm:
+    Hotel: Pay !price to rent this room for !renttime?
+    iHotel: Pay !price to rent this room for !renttime?
+  transaction:
+    Hotel: You paid !price to rent this room for !renttime!
+    iHotel: You paid !price to rent this room for !renttime!
+  transaction_owner:
+    Hotel: \!customer rented room nr. !roomnr in !hotel for !price!
+    iHotel: ''
+  help:
+    Hotel: This sign exchanges the customer's money for the ability to open a door to a hotel room.  Line 2 must say the name of the hotel.  Line 3 must be the amount of time the rental takes (e.g. 20s for 20 seconds, 24h for 1 day).  Line 4 is the cost of the rental.
+    iHotel: This sign exchanges the customer's money for the ability to open a door to a hotel room.  Line 2 must say the name of the hotel.  Line 3 must be the amount of time the rental takes (e.g. 20s for 20 seconds, 24h for 1 day).  Line 4 is the cost of the rental. The owner does not get money from this sign.
+errors:
+  need_door: You need to link at least one door to build this shop!
+  invalid_time: Invalid time period specified on the third line.
+  invalid_hotel: Invalid hotel name on the second line.
+  no_door: There's no door attached to this room!
+  already_rented_self_timeleft: You've already rented this room, there is !timeleft left.
+  already_rented_other_timeleft: This room has already been rented, there is !timeleft left before it can be rented again.
+  could_not_rent_room: Could not rent the room, please tell your administrator to check the server.log for more information.
+  already_registered: This room is already registered!
+  no_entry: You have not rented this room, so you are not allowed to enter!
+  max_rents_reached: You have reached the maximum amount of rooms you can rent. It is set at !maxrents room(s) per person.
+  reloaded: SignShopHotel has been reloaded
+  cant_use_boot_from_console: Command cannot be used from console without a username
+  booted_from_sign: Successfully booted renter from the room you're looking at
+  no_player_to_boot: No player is currently renting this Hotel Room
+  block_not_hotel_room: The block you are looking at is not a valid Hotel Room
+  player_does_not_exist: Player does not exist on this server
+  booted_from_all_rooms: Player has been successfully booted from all rooms
+  you_have_been_booted_sign: You have been booted from room !roomnr at Hotel !hotel. Contact the Server Administrator if you have questions.
+  you_have_been_booted_all: You have been booted from all Hotel rooms you are currently renting. Contact the Server Administrator if you have questions.

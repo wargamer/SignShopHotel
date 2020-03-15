@@ -1,33 +1,38 @@
-package org.wargamer2010.sshotel;
+package org.wargamer2010.signshophotel;
+
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.wargamer2010.signshop.Seller;
+import org.wargamer2010.signshop.SignShop;
+import org.wargamer2010.signshop.commands.CommandDispatcher;
+import org.wargamer2010.signshop.configuration.SignShopConfig;
+import org.wargamer2010.signshop.configuration.Storage;
+import org.wargamer2010.signshop.configuration.configUtil;
+import org.wargamer2010.signshop.util.commandUtil;
+import org.wargamer2010.signshop.util.signshopUtil;
+import org.wargamer2010.signshophotel.commands.BootHandler;
+import org.wargamer2010.signshophotel.commands.HelpHandler;
+import org.wargamer2010.signshophotel.commands.ReloadHandler;
+import org.wargamer2010.signshophotel.listeners.ExpiredRentListener;
+import org.wargamer2010.signshophotel.listeners.SignShopListener;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.wargamer2010.signshop.Seller;
-import org.wargamer2010.signshop.SignShop;
-import org.wargamer2010.signshop.commands.CommandDispatcher;
-import org.wargamer2010.signshop.configuration.*;
-import org.wargamer2010.signshop.metrics.setupMetrics;
-import org.wargamer2010.signshop.player.SignShopPlayer;
-import org.wargamer2010.signshop.util.commandUtil;
-import org.wargamer2010.signshop.util.signshopUtil;
-import org.wargamer2010.sshotel.commands.*;
-import org.wargamer2010.sshotel.listeners.ExpiredRentListener;
-import org.wargamer2010.sshotel.listeners.SignShopListener;
 
 public class SSHotel extends JavaPlugin {
+    private static final int B_STATS_ID = 6768;
     private static final Logger logger = Logger.getLogger("Minecraft");
     private static SSHotel instance = null;
     private static CommandDispatcher commandDispatcher = new CommandDispatcher();
+
 
     private static int MaxRentsPerPerson = 0;
 
@@ -74,36 +79,20 @@ public class SSHotel extends JavaPlugin {
         SignShopConfig.addLinkable("STONE_PLATE", "plate");
         SignShopConfig.addLinkable("WOOD_PLATE", "plate");
 
-        setupMetrics metrics = new setupMetrics(this);
-        if(!metrics.isOptOut()) {
-            if(metrics.setup())
-                log("Succesfully started Metrics, see http://mcstats.org for more information.", Level.INFO);
-            else
-                log("Could not start Metrics, see http://mcstats.org for more information.", Level.INFO);
-        }
 
         fixStaleHotelRents();
 
         setInstance(this);
+        //Enable metrics
+        if (SignShopConfig.metricsEnabled()) {
+            Metrics metrics = new Metrics(this, B_STATS_ID);
+            log("Thank you for enabling metrics!", Level.INFO);
+        }
         log("Enabled", Level.INFO);
     }
 
-    /**
-     * If the server didn't propertly shutdown it is possible for rents to become corrupt
-     * This method removes stale rents (i.e. rents which have a renter but no left but)
-     */
-    private void fixStaleHotelRents() {
-        for(Seller seller : Storage.get().getSellers()) {
-            if(seller == null)
-                continue;
-            String timeleft = RoomRegistration.getTimeLeftForRoom(seller);
-            if(timeleft.equalsIgnoreCase("N/A") && RoomRegistration.getPlayerFromShop(seller) != null) {
-                SignShop.log(String.format("Fixing stale rent for hotelroom at '%s'",
-                        signshopUtil.convertLocationToString(seller.getSignLocation()))
-                        , Level.WARNING);
-                RoomRegistration.setPlayerForShop(seller, null);
-            }
-        }
+    private static void setInstance(SSHotel newInstance) {
+        instance = newInstance;
     }
 
     @Override
@@ -111,33 +100,42 @@ public class SSHotel extends JavaPlugin {
         log("Disabled", Level.INFO);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
-        String commandName = cmd.getName().toLowerCase();
-        if(!commandName.equalsIgnoreCase("signshophotel") && !commandName.equalsIgnoreCase("sshotel"))
-            return true;
-        return commandUtil.handleCommand(sender, cmd, commandLabel, args, commandDispatcher);
+    /**
+     * If the server didn't properly shutdown it is possible for rents to become corrupt
+     * This method removes stale rents (i.e. rents which have a renter but no left but)
+     */
+    private void fixStaleHotelRents() {
+        for (Seller seller : Storage.get().getSellers()) {
+            if (seller == null)
+                continue;
+            String timeLeft = RoomRegistration.getTimeLeftForRoom(seller);
+            if (timeLeft.equalsIgnoreCase("N/A") && RoomRegistration.getPlayerFromShop(seller) != null) {
+                SignShop.log(String.format("Fixing stale rent for hotel room at '%s'",
+                        signshopUtil.convertLocationToString(seller.getSignLocation()))
+                        , Level.WARNING);
+                RoomRegistration.setPlayerForShop(seller, null);
+            }
+        }
     }
 
     private void createDir() {
         if(!this.getDataFolder().exists()) {
-            if(!this.getDataFolder().mkdir()) {
+            if (!this.getDataFolder().mkdir()) {
                 log("Could not create plugin folder!", Level.SEVERE);
             }
         }
     }
 
-    /**
-     * Retrieves the settings from the SSHotel config file
-     * This does not include the SignShop signs/messages/errors sections
-     * @param ymlThing
-     */
     private static void getSettings(FileConfiguration ymlThing) {
         MaxRentsPerPerson = ymlThing.getInt("MaxRentsPerPerson", 0);
     }
 
-    private static void setInstance(SSHotel newinstance) {
-        instance = newinstance;
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, Command cmd, @NotNull String commandLabel, @NotNull String[] args) {
+        String commandName = cmd.getName().toLowerCase();
+        if (!commandName.equalsIgnoreCase("signshophotel") && !commandName.equalsIgnoreCase("sshotel"))
+            return true;
+        return commandUtil.handleCommand(sender, cmd, commandLabel, args, commandDispatcher);
     }
 
     private void setupCommands() {

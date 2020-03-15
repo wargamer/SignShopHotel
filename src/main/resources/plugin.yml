@@ -1,0 +1,14 @@
+name: SignShopHotel
+main: org.wargamer2010.signshophotel.SSHotel
+api-version: "1.13"
+version: "${project.version}"
+dev-url: http://dev.bukkit.org/server-mods/signshop
+depend: [SignShop]
+authors: [Wargamer2010, Weaves]
+commands:
+  signshophotel:
+    description: Admin commands for SignShopHotel
+    usage: /signshophotel [reload|boot|help]
+  sshotel:
+    description: Admin commands for SignShopHotel
+    usage: /signshophotel [reload|boot|help]
