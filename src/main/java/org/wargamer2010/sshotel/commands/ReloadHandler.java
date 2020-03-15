@@ -1,7 +1,6 @@
 
 package org.wargamer2010.sshotel.commands;
 
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -10,6 +9,8 @@ import org.wargamer2010.signshop.configuration.SignShopConfig;
 import org.wargamer2010.signshop.player.SignShopPlayer;
 import org.wargamer2010.signshop.util.signshopUtil;
 import org.wargamer2010.sshotel.SSHotel;
+
+import java.util.logging.Level;
 
 public class ReloadHandler implements ICommandHandler {
     private static ICommandHandler instance = new ReloadHandler();
@@ -31,7 +32,7 @@ public class ReloadHandler implements ICommandHandler {
      */
     @Override
     public boolean handle(String command, String[] args, SignShopPlayer player) {
-        if(!signshopUtil.hasOPForCommand(player))
+        if (signshopUtil.notOPForCommand(player))
             return true;
         PluginManager pm = Bukkit.getPluginManager();
 

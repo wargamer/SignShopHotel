@@ -1,7 +1,6 @@
 
 package org.wargamer2010.sshotel;
 
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -14,6 +13,8 @@ import org.wargamer2010.signshop.util.SSTimeUtil;
 import org.wargamer2010.sshotel.timing.RoomExpiration;
 import org.wargamer2010.sshotel.util.SSHotelUtil;
 
+import java.util.List;
+
 public class RoomRegistration {
     private RoomRegistration() {
 
@@ -21,7 +22,7 @@ public class RoomRegistration {
 
     public static int registerRoom(Block door, String hotel) {
         Storage storage = Storage.get();
-        if(!storage.getShopsByBlock(door).isEmpty())
+        if (!storage.getShopsByBlock(door).isEmpty())
             return -1;
 
         return (storage.getShopsWithMiscSetting("Hotel", hotel).size() + 1);
@@ -70,7 +71,7 @@ public class RoomRegistration {
         else
             sign.setLine(3, seller.getMisc("Price"));
         sign.update();
-        Storage.get().SafeSave();
+        Storage.get().Save();
     }
 
     public static int getAmountOfRentsForPlayer(SignShopPlayer player) {
@@ -81,21 +82,14 @@ public class RoomRegistration {
         return Storage.get().getShopsWithMiscSetting("Renter", player.GetIdentifier().toString());
     }
 
-    /**
-     * Returns a string representation of the time left for the current Hotel room
-     * Or returns N/A if the room is not rented out
-     *
-     * @param seller
-     * @return String representation of the time left
-     */
     public static String getTimeLeftForRoom(Seller seller) {
-        if(seller == null)
+        if (seller == null)
             return "N/A";
-        RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
-        if(roomex == null)
+        RoomExpiration roomEx = SSHotelUtil.getRoomExpirationFromSeller(seller);
+        if (roomEx == null)
             return "N/A";
-        int left = SignShop.getTimeManager().getTimeLeftForExpirable(roomex.getEntry());
-        if(left == -1)
+        int left = SignShop.getTimeManager().getTimeLeftForExpirable(roomEx.getEntry());
+        if (left == -1)
             return "N/A"; // TODO: Handle this somewhere else?
         return SSTimeUtil.parseTime(left);
     }

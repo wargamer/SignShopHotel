@@ -30,24 +30,26 @@ public class SignShopListener implements Listener {
 
         boolean foundHotelSign = false;
         for(String item : SignShopConfig.getBlocks(event.getOperation()))
-            if(item.equalsIgnoreCase("HotelSign"))
+            if (item.equalsIgnoreCase("HotelSign")) {
                 foundHotelSign = true;
-        if(!foundHotelSign)
+                break;
+            }
+        if (!foundHotelSign)
             return;
 
-        Sign sign = (Sign)event.getSign().getState();
+        Sign sign = (Sign) event.getSign().getState();
         String hotel = SSHotelUtil.trimBrackets(sign.getLine(1));
 
-        Block bDoor = SSHotelUtil.getHotelPartFromBlocklist(event.getActivatables());
-        Integer roomNumber = RoomRegistration.registerRoom(bDoor, hotel);
-        if(roomNumber < 0) {
+        Block bDoor = SSHotelUtil.getHotelPartFromBlockList(event.getActivatables());
+        int roomNumber = RoomRegistration.registerRoom(bDoor, hotel);
+        if (roomNumber < 0) {
             event.getPlayer().sendMessage(SignShopConfig.getError("already_registered", event.getMessageParts()));
             event.setCancelled(true);
             return;
         }
 
         event.setMiscSetting("Hotel", hotel);
-        event.setMiscSetting("RoomNr", roomNumber.toString());
+        event.setMiscSetting("RoomNr", Integer.toString(roomNumber));
         event.setMiscSetting("Period", SSHotelUtil.trimBrackets(sign.getLine(2)));
         event.setMiscSetting("Price", SSHotelUtil.getNumberFromFourthLine(event.getSign()).toString());
         event.setMiscSetting("Renter", "");
@@ -67,9 +69,9 @@ public class SignShopListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onSSTouchShopEvent(SSTouchShopEvent event) {
-        if(event.isCancelled() || !isOpenDoorInteraction(event.getAction(), event.getBlock()))
+        if (event.isCancelled() || !isOpenDoorInteraction(event.getAction(), event.getBlock()))
             return;
-        if(!SSHotelUtil.containsHotelBlock(event.getShop().getOperation()))
+        if (SSHotelUtil.doesNotContainHotelBlock(event.getShop().getOperation()))
             return;
         Seller shop = RoomRegistration.getRoomByDoor(event.getBlock());
         if(shop == null)
@@ -87,20 +89,20 @@ public class SignShopListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onSSCleanup(SSDestroyedEvent event) {
-        if(event.isCancelled())
+        if (event.isCancelled())
             return;
         Seller seller = event.getShop();
-        if(!seller.getOperation().equals("hotel"))
+        if (!seller.getOperation().equals("hotel"))
             return;
 
-        RoomExpiration roomex = SSHotelUtil.getRoomExpirationFromSeller(seller);
-        if(roomex == null)
+        RoomExpiration roomEx = SSHotelUtil.getRoomExpirationFromSeller(seller);
+        if (roomEx == null)
             return;
-        SignShop.getTimeManager().removeExpirable(roomex.getEntry());
+        SignShop.getTimeManager().removeExpirable(roomEx.getEntry());
 
         // SignShop can not safely assume that breaking an attachable invalidates the shop so
         // if a door is broken, we can be pretty sure the Hotel sign is useless
-        if(event.getReason() == SSDestroyedEventType.attachable && itemUtil.clickedDoor(event.getBlock())) {
+        if (event.getReason() == SSDestroyedEventType.attachable && itemUtil.clickedDoor(event.getBlock())) {
             Storage.get().removeSeller(event.getShop().getSign().getLocation());
         }
     }
